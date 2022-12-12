@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>The App Title</h1>
+    <h1>PROV.XYZ</h1>
 
     <nav>
       <router-link to="/">Home</router-link>
