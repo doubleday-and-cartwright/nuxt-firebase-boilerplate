@@ -1,10 +1,11 @@
 <template>
   <header>
-    <h1>PROV.XYZ</h1>
+    <a>The App</a>
 
     <nav>
       <router-link to="/">Home</router-link>
       <router-link to="about">About</router-link>
+      <router-link to="login">Login</router-link>
     </nav>
   </header>
 </template>
