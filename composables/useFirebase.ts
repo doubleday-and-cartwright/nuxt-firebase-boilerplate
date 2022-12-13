@@ -39,5 +39,4 @@ export const initUser = async () => {
 
 export const signOutUser = async () => {
   const result = await getAuth().signOut()
-  return result
 }

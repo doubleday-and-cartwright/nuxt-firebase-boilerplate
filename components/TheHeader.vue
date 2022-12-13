@@ -1,19 +1,17 @@
 <template>
   <header>
-    <router-link class="brand" to="/">The App</router-link>
+    <NuxtLink class="brand" to="/">The App</NuxtLink>
 
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="about">About</router-link>
-      <router-link to="login">Login</router-link>
+      <NuxtLink v-if="currentUser" to="profile">Profile</NuxtLink>
+      <NuxtLink v-if="!currentUser" to="login">Login</NuxtLink>
+      <button v-else @click="signOutUser">Logout {{ currentUser.phoneNumber }}</button>
     </nav>
   </header>
 </template>
 
-<script>
-export default {
-
-}
+<script setup>
+const currentUser = useCurrentUser()
 </script>
 
 <style lang="scss" scoped>

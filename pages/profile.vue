@@ -1,8 +1,16 @@
 <template>
-  <h1>This is the "{{ testData?.title || 'Not Set' }}" page</h1>
+  <h1>User Profile</h1>
+  <h2>Username: {{ testData?.username }}</h2>
+  <p>My data:</p>
   <pre>{{ testData }}</pre>
   
-  <input type="text" v-model="inputValue" />
+  <label for="username-input">New Username</label>
+  <input
+    id="username-input"
+    type="text"
+    v-model="inputValue"
+    placeholder="New Username"
+  />
   <button @click="updateTestData">Save</button>
 </template>
 
@@ -12,11 +20,17 @@ import { doc, onSnapshot, getDoc, setDoc } from 'firebase/firestore'
 
 const { $firestore } = useNuxtApp()
 
+const currentUser = useCurrentUser()
+
 const testData = ref({})
 const inputValue = ref('')
 
+definePageMeta({
+  middleware: ['auth']
+})
+
 onMounted(async() => {
-  const docRef = doc($firestore, 'test-collection', 'settings')
+  const docRef = doc($firestore, 'users', currentUser.value.uid)
 
   onSnapshot(docRef, (snap) => {
     console.log('Firestore update:', snap.data())
@@ -26,8 +40,9 @@ onMounted(async() => {
 
 async function updateTestData () {
   console.log('Updating test data:', inputValue.value)
-  await setDoc(doc($firestore, 'test-collection', 'settings'), {
-    title: inputValue.value
+  console.log('user', currentUser)
+  await setDoc(doc($firestore, 'users', currentUser.value.uid), {
+    username: inputValue.value
   }, { merge: true})
   console.log('Updated')
 }

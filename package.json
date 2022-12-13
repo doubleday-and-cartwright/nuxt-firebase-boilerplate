@@ -6,7 +6,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "gc-deploy": "gcloud builds submit --tag gcr.io/prov-xyz-dev/my-nuxt-app-name:1.0.0 . && gcloud run deploy --image=gcr.io/prov-xyz-dev/my-nuxt-app-name:1.0.0 --platform managed --port 3000"
+    "deploy": "NITRO_PRESET=firebase yarn build && cd .output/server && npm install && cd ../../ && firebase deploy"
   },
   "devDependencies": {
     "firebase-admin": "^11.3.0",
