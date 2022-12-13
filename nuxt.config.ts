@@ -3,6 +3,15 @@ export default defineNuxtConfig({
   css: [
     '~/assets/style/main.scss'
   ],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "@/assets/style/variables.scss";'
+        }
+      }
+    }
+  },
   // These variables are meant to be exposed on the client
   publicRuntimeConfig: {
     USE_FIREBASE_EMULATORS: process.env.VUE_APP_USE_FIREBASE_EMULATORS,
