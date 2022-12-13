@@ -10,13 +10,13 @@
 import { ref } from 'vue'
 import { doc, onSnapshot, getDoc, setDoc } from 'firebase/firestore'
 
+const { $firestore } = useNuxtApp()
+
 const testData = ref({})
 const inputValue = ref('')
 
-const { firestore } = useFirebase()
-
 onMounted(async() => {
-  const docRef = doc(firestore, 'test-collection', 'settings')
+  const docRef = doc($firestore, 'test-collection', 'settings')
 
   onSnapshot(docRef, (snap) => {
     console.log('Firestore update:', snap.data())
@@ -26,7 +26,7 @@ onMounted(async() => {
 
 async function updateTestData () {
   console.log('Updating test data:', inputValue.value)
-  await setDoc(doc(firestore, 'test-collection', 'settings'), {
+  await setDoc(doc($firestore, 'test-collection', 'settings'), {
     title: inputValue.value
   }, { merge: true})
   console.log('Updated')
