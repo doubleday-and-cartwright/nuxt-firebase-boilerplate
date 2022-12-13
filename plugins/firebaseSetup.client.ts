@@ -23,7 +23,10 @@ export default defineNuxtPlugin((NuxtApp) => {
     measurementId: env.FIREBASE_MEASUREMENT_ID
   }
   const firebaseApp = initializeApp(firebaseConfig)
-  const auth = getAuth(firebaseApp)
+
+  initUser()
+
+  const auth = getAuth()
   const firestore = getFirestore()
 
   if (env.USE_FIREBASE_EMULATORS === 'true') {

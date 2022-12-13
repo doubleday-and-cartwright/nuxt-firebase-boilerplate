@@ -25,11 +25,17 @@
       Confirm
     </button>
   </div>
+
+  <client-only>
+    <pre>{{ currentUser }}</pre>
+  </client-only>
 </template>
 
 <script setup>
 import { RecaptchaVerifier } from 'firebase/auth'
 const { $auth } = useNuxtApp()
+
+const currentUser = useCurrentUser()
 
 // Data
 const phoneNumber = ref('')

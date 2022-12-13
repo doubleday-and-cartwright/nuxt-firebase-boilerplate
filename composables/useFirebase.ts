@@ -26,7 +26,18 @@ export const signInUser = async (phoneNumber: string, appVerifier: ApplicationVe
 }
 
 export const initUser = async () => {
-  onAuthStateChanged(getAuth(), (user) => {
-    console.log('User auth state changed.')
+  console.log('Initializing user.')
+  const auth = getAuth()
+  const currentUser = useCurrentUser()
+  currentUser.value = auth.currentUser
+
+  onAuthStateChanged(auth, (user) => {
+    console.log('User auth state changed', user)
+    currentUser.value = user
   })
+}
+
+export const signOutUser = async () => {
+  const result = await getAuth().signOut()
+  return result
 }
