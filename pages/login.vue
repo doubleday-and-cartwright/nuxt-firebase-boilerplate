@@ -1,5 +1,10 @@
+<!--
+  This view provides basic login functionality, currently using a phone number.
+-->
+
 <template>
   <h1>Login</h1>
+
   <div class="input-group">
     <label for="phone-number-input">Phone Number</label>
     <input
@@ -43,6 +48,7 @@ const verificationCode = ref('')
 const confirmationResult = ref()
 
 onMounted(() => {
+  // Set up the recaptcha for phone based authentication
   window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
     'size': 'invisible', // Invisible means that there's no input required from the user
     'callback': (response) => {
@@ -57,8 +63,15 @@ onMounted(() => {
  */
 async function signIn () {
   console.log('Signing in...')
-  const confirmation = await signInUser(phoneNumber.value, window.recaptchaVerifier)
-  confirmationResult.value = confirmation
+  try {
+    const confirmation = await signInUser(phoneNumber.value, window.recaptchaVerifier)
+    confirmationResult.value = confirmation
+    console.log('Verification SMS sent.')
+    alert('Successfully sent SMS.')
+  } catch (err) {
+    console.log('Unable to send SMS:', err)
+    alert(err.message)
+  }
 }
 
 /**
@@ -66,10 +79,12 @@ async function signIn () {
  */
 async function confirmCode () {
   console.log('Confirming with code', verificationCode.value)
-  const user = await confirmationResult.value.confirm(verificationCode.value)
-    .catch((error) => {
-      console.log(error)
-    })
-  console.log('USER', user)
+  try {
+    const user = await confirmationResult.value.confirm(verificationCode.value)
+    console.log('Logged in. User data:', user)
+  } catch (err) {
+    console.log('Verification code error:', err)
+    alert(err.message)
+  }
 }
 </script>

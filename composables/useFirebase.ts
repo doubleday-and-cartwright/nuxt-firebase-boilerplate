@@ -6,7 +6,8 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPhoneNumber,
-  ApplicationVerifier
+  ApplicationVerifier,
+  User
 } from 'firebase/auth'
 
 // To apply the default browser preference instead of explicitly setting it.
@@ -18,25 +19,36 @@ export const createUser = async () => {
 
 export const signInUser = async (phoneNumber: string, appVerifier: ApplicationVerifier) => {
   const confirmationResult = await signInWithPhoneNumber(getAuth(), phoneNumber, appVerifier)
-    .catch((error: Error) => {
-      console.log('Unable to send SMS:', error)
-    })
-  console.log('Verification SMS sent.')
   return confirmationResult
 }
 
+/**
+ * Begin listening for changes on the auth user.
+ */
 export const initUser = async () => {
   console.log('Initializing user.')
   const auth = getAuth()
   const currentUser = useCurrentUser()
-  currentUser.value = auth.currentUser
+  currentUser.value = auth.currentUser as User
 
   onAuthStateChanged(auth, (user) => {
-    console.log('User auth state changed', user)
-    currentUser.value = user
+    console.log('Firebase user auth state changed:', user)
+    // Save the updated user data to the state
+    currentUser.value = user as User
   })
 }
 
+/**
+ * Sign out the currently authenticated Firebase user and direct them to the index.
+ */
 export const signOutUser = async () => {
-  const result = await getAuth().signOut()
+  const router = useRouter()
+  try {
+    useUserProfileUnsubscribe()
+
+    await getAuth().signOut()
+    router.push('/')
+  } catch (err) {
+    alert('Error signing out.')
+  }
 }

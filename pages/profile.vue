@@ -1,8 +1,8 @@
 <template>
   <h1>User Profile</h1>
-  <h2>Username: {{ testData?.username }}</h2>
+  <h2>Username: {{ userProfile?.username }}</h2>
   <p>My data:</p>
-  <pre>{{ testData }}</pre>
+  <pre>{{ userProfile }}</pre>
   
   <label for="username-input">New Username</label>
   <input
@@ -11,7 +11,7 @@
     v-model="inputValue"
     placeholder="New Username"
   />
-  <button @click="updateTestData">Save</button>
+  <button @click="updateUserProfile">Save</button>
 </template>
 
 <script setup>
@@ -21,8 +21,9 @@ import { doc, onSnapshot, getDoc, setDoc } from 'firebase/firestore'
 const { $firestore } = useNuxtApp()
 
 const currentUser = useCurrentUser()
+const userProfile = useUserProfile()
+const userProfileUnsubscribe = useUserProfileUnsubscribe()
 
-const testData = ref({})
 const inputValue = ref('')
 
 definePageMeta({
@@ -30,16 +31,21 @@ definePageMeta({
 })
 
 onMounted(async() => {
-  const docRef = doc($firestore, 'users', currentUser.value.uid)
+  if (!userProfileUnsubscribe.value) {
+    console.log('Setting up user profile listener.')
+    const docRef = doc($firestore, 'users', currentUser.value.uid)
 
-  onSnapshot(docRef, (snap) => {
-    console.log('Firestore update:', snap.data())
-    testData.value = snap.data()
-  })
+    userProfileUnsubscribe.value = onSnapshot(docRef, (snap) => {
+      console.log('Firestore update:', snap.data())
+      userProfile.value = snap.data()
+    })
+  } else {
+    console.log('Already subscribed.')
+  }
 })
 
-async function updateTestData () {
-  console.log('Updating test data:', inputValue.value)
+async function updateUserProfile () {
+  console.log('Updating userProfile data:', inputValue.value)
   console.log('user', currentUser)
   await setDoc(doc($firestore, 'users', currentUser.value.uid), {
     username: inputValue.value
