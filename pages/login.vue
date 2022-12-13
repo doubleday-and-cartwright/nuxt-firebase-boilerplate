@@ -1,14 +1,30 @@
 <template>
   <h1>Login</h1>
-  <input v-model="phoneNumber" type="phone" />
-  <button id="sign-in-button" class="block" @click="signIn">
-    Login
-  </button>
+  <div class="input-group">
+    <label for="phone-number-input">Phone Number</label>
+    <input
+      v-model="phoneNumber"
+      placeholder="+14445556666"
+      id="phone-number-input"
+      type="phone"
+    />
+    <button id="sign-in-button" class="block" @click="signIn">
+      Login
+    </button>
+  </div>
 
-  <input v-model="verificationCode" type="text">
-  <button class="block" @click="confirmCode">
-    Confirm
-  </button>
+  <div class="input-group">
+    <label for="verification-code-input">Verification Code</label>
+    <input
+      v-model="verificationCode"
+      placeholder="123456"
+      id="verification-code-input"
+      type="text"
+    >
+    <button class="block" @click="confirmCode">
+      Confirm
+    </button>
+  </div>
 </template>
 
 <script setup>

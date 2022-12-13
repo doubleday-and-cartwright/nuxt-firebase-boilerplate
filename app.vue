@@ -2,7 +2,9 @@
   <div>
     <TheHeader />
     <!-- Display contents from /pages directory based on route -->
-    <NuxtPage />
+    <div class="container">
+      <NuxtPage />
+    </div>
   </div>
 </template>
 
