@@ -13,6 +13,8 @@ export default defineNuxtPlugin((NuxtApp) => {
   const nuxtApp = useNuxtApp()
   const env = nuxtApp.$config.public
 
+  console.log('ENV:', env)
+
   const firebaseConfig = {
     apiKey: env.FIREBASE_API_KEY,
     authDomain: env.FIREBASE_AUTH_DOMAIN,
@@ -33,7 +35,7 @@ export default defineNuxtPlugin((NuxtApp) => {
     const firebaseEmulator = firebaseSettings.emulators
     console.log('Connecting to Firebase emulators...')
     connectFirestoreEmulator(firestore, 'localhost', firebaseEmulator.firestore.port)
-    // connectAuthEmulator(auth, 'http://localhost:' + firebaseEmulator.auth.port)
+    connectAuthEmulator(auth, 'http://localhost:' + firebaseEmulator.auth.port)
   }
 
   NuxtApp.provide('firestore', firestore)

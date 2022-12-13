@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   },
   // These variables are meant to be exposed on the client
   publicRuntimeConfig: {
-    USE_FIREBASE_EMULATORS: process.env.VUE_APP_USE_FIREBASE_EMULATORS,
+    USE_FIREBASE_EMULATORS: process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_USE_FIREBASE_EMULATORS : 'false',
 
     FIREBASE_API_KEY: process.env.VUE_APP_FIREBASE_API_KEY,
     FIREBASE_AUTH_DOMAIN: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,

@@ -11,13 +11,13 @@
   ],
   "emulators": {
     "auth": {
-      "port": 9095
+      "port": 9097
     },
     "functions": {
-      "port": 5005
+      "port": 5007
     },
     "firestore": {
-      "port": 8085
+      "port": 8087
     },
     "ui": {
       "enabled": true
