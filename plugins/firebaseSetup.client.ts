@@ -9,7 +9,7 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth' // Can only run on 
 
 import * as firebaseSettings from '../firebase.json'
 
-export default defineNuxtPlugin((NuxtApp) => {
+export default defineNuxtPlugin(async (NuxtApp) => {
   const nuxtApp = useNuxtApp()
   const env = nuxtApp.$config.public
 
@@ -26,8 +26,6 @@ export default defineNuxtPlugin((NuxtApp) => {
   }
   const firebaseApp = initializeApp(firebaseConfig)
 
-  initUser()
-
   const auth = getAuth()
   const firestore = getFirestore()
 
@@ -38,6 +36,9 @@ export default defineNuxtPlugin((NuxtApp) => {
     connectAuthEmulator(auth, 'http://localhost:' + firebaseEmulator.auth.port)
   }
 
+  await initUser()
+
   NuxtApp.provide('firestore', firestore)
+  NuxtApp.vueApp.provide('auth', auth)
   NuxtApp.provide('auth', auth)
 })

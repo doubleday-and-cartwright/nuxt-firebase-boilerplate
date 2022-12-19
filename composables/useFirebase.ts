@@ -29,12 +29,21 @@ export const initUser = async () => {
   console.log('Initializing user.')
   const auth = getAuth()
   const currentUser = useCurrentUser()
-  currentUser.value = auth.currentUser as User
 
-  onAuthStateChanged(auth, (user) => {
-    console.log('Firebase user auth state changed:', user)
-    // Save the updated user data to the state
-    currentUser.value = user as User
+  // Wait for onAuthStateChanged
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('Firebase user auth state changed:', user)
+      // Save the updated user data to the state
+      currentUser.value = user as User
+
+      if (user) {
+        console.log('An authenticated user is present.')
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   })
 }
 

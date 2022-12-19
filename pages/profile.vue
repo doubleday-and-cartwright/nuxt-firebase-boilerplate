@@ -1,8 +1,10 @@
 <template>
   <h1>User Profile</h1>
-  <h2>Username: {{ userProfile?.username }}</h2>
-  <p>My data:</p>
-  <pre>{{ userProfile }}</pre>
+  <client-only>
+    <h2>Username: {{ userProfile?.username }}</h2>
+    <p>My data:</p>
+    <pre>{{ userProfile }}</pre>
+  </client-only>
   
   <label for="username-input">New Username</label>
   <input
@@ -20,17 +22,18 @@ import { doc, onSnapshot, getDoc, setDoc } from 'firebase/firestore'
 
 const { $firestore } = useNuxtApp()
 
+const inputValue = ref('')
+
 const currentUser = useCurrentUser()
 const userProfile = useUserProfile()
 const userProfileUnsubscribe = useUserProfileUnsubscribe()
-
-const inputValue = ref('')
 
 definePageMeta({
   middleware: ['auth']
 })
 
 onMounted(async() => {
+  console.log('Mounted user profile.')
   if (!userProfileUnsubscribe.value) {
     console.log('Setting up user profile listener.')
     const docRef = doc($firestore, 'users', currentUser.value.uid)

@@ -2,11 +2,13 @@
   <header>
     <NuxtLink class="brand" to="/">The App</NuxtLink>
 
-    <nav>
-      <NuxtLink v-if="currentUser" to="profile">Profile</NuxtLink>
-      <NuxtLink v-if="!currentUser" to="login">Login</NuxtLink>
-      <button v-else @click="signOutUser">Logout {{ currentUser.phoneNumber }}</button>
-    </nav>
+    <client-only>
+      <nav>
+        <NuxtLink v-if="currentUser" to="profile">Profile</NuxtLink>
+        <NuxtLink v-if="!currentUser" to="login">Login</NuxtLink>
+        <button v-else @click="signOutUser">Logout {{ currentUser.phoneNumber }}</button>
+      </nav>
+    </client-only>
   </header>
 </template>
 
